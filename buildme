@@ -1,0 +1,18 @@
+go get -v -t -d ./...
+go build -v -o bin/escher ./cmd/...
+
+mkdir -p bin/plugins/faculty
+
+echo "Build Plugins from Go sources ..."
+go get -v -t -d ./... \
+        -buildmode=plugin \
+        -o bin/plugins/faculty/gocircuit.so \
+        -tags=plugin_faculty_gocircuit \
+        ./pkg/faculty/gocircuit/
+
+echo "Install the main executable into PATH ..."
+go install -v ./cmd/...
+
+echo "Run Go & Escher Tests ..."
+./scripts/tests.sh
+
